@@ -1,0 +1,33 @@
+.add-item-dialog-container{
+    width:60%;
+    background-color: white;
+    margin-top:15%;
+    margin-left:20%;
+}
+.add-form-buttons{
+    margin-top:20px;
+    display:flex;
+    justify-content: flex-start;
+}
+.add-item-form{
+    padding:10px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+.add-item-form input{
+    width:50%;
+    border: none;
+    border-bottom: 2px solid blue;
+}
+.add-form-buttons > button{
+    margin-right:20px;
+    background: transparent;
+    border: transparent;
+}
+.cancel-button{
+    color: grey;
+}
+.submit-button{
+    color:blue;
+}
