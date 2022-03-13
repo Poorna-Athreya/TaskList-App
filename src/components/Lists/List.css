@@ -1,0 +1,12 @@
+.listItems-container{
+    justify-content: space-evenly;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: space-evenly;
+}
+h1{
+    text-align: left;
+}
+.lists-container{
+    padding:1%;
+}
