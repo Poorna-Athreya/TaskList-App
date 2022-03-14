@@ -4,3 +4,17 @@
     height:200px;
     width:300px;
 }
+
+@media screen and (max-width:1200px){
+    .list-items{
+        width: 200px;
+    }
+}
+
+@media screen and (max-width:700px) {
+    .list-items{
+        height:200px;
+        width:300px;
+        margin-top:3%;
+    }
+}

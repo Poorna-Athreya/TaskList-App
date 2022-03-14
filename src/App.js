@@ -69,9 +69,10 @@ function App() {
         const modifiedListItem = {...eachList};
         console.log('Current ListItem: ',modifiedListItem);
         const modifiedTasks = [...eachList.tasks, 
-          {id: eachList.tasks.length, title: task}];
+          {id: eachList.tasks.length+1, title: task}];
         modifiedListItem.tasks = modifiedTasks;
         console.log('Modified object: ',modifiedListItem);
+        setCurrentList((prevList) => modifiedListItem);
         return modifiedListItem;
       }
     });
@@ -92,6 +93,7 @@ function App() {
         });
         console.log('Modified tasks: ', modifiedTasks);
         modifiedListItem.tasks= modifiedTasks; 
+        setCurrentItemEdit((prevEditItem) => {return {id:0,title:''}});
         // console.log('Modified List Item: ', modifiedListItem);
         return modifiedListItem;
       }
@@ -122,13 +124,13 @@ function App() {
       (
         <AddOrEditItemDialog item='List' itemValue={currentItemEdit} onCreate = {createList} returnToPrev = {() => {
           setPage((prevPage) => 'Lists');
-          setCurrentItemEdit({title:''});
+          setCurrentItemEdit((prevEditItem) => {return {id:0,title:''}});
         }}/>
       ) :
       (
         <AddOrEditItemDialog item='Task' itemValue={currentItemEdit} onEdit = {editTask} onCreate = {createTask} returnToPrev = {()=> {
           setPage((prevPage) => 'Tasks');
-          setCurrentItemEdit({title:''});
+          setCurrentItemEdit((prevEditItem) => {return {id:0,title:''}});
         }}/>
       )
       }
