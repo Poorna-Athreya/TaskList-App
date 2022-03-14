@@ -4,7 +4,7 @@
 body{
   height: 100%;
   /* background: linear-gradient(0deg, #59b6a6 50%, #6788b3 50%); */
-  background-color: #6f9bb8;
+  background-color: #a2c6df;
   background-repeat: no-repeat;
 }
 .App-logo {
@@ -13,6 +13,13 @@ body{
 }
 button{
   cursor: pointer;
+}
+.back-button{
+  padding: 10px;
+  color:rgb(98, 162, 223);
+  background-color: white;
+  margin:2%;
+  border:none;
 }
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
