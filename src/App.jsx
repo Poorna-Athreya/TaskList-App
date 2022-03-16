@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter, Routes, Route,
 } from 'react-router-dom';
@@ -7,23 +7,34 @@ import List from './components/Lists/List';
 import AddItem from './components/AddItem/AddItem';
 import Tasks from './components/Tasks/Task';
 import AddOrEditItemDialog from './components/AddOrEditItemDialog/AddOrEditItemDialog';
+import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import { LIST_ROUTE, TASK_ROUTE } from './constants/routes';
+import makeRequest from './utils/makeRequest';
+import { BACKEND_URL } from './constants/apiEndpoints';
 import { INITIAL_LISTS } from './constants/values';
 
 function App() {
   const [lists, setLists] = useState(INITIAL_LISTS);
-  // const [currentItemEdit, setCurrentItemEdit] = useState({ title: '' });
+  const [isListsInitialised, setIsListsInitialised] = useState(false);
+  useEffect(() => {
+    if (!isListsInitialised) {
+      setIsListsInitialised(true);
+      makeRequest({ method: 'get', url: `${BACKEND_URL}${LIST_ROUTE}` }).then((listsData) => {
+        setLists(listsData);
+      });
+    }
+  }, [lists]);
 
   const getListById = (listId) => lists.find((listItem) => listItem.id === listId);
 
   const createList = (newListName) => {
     const newListItem = {
-      id: Math.floor(Math.random() * 101),
-      listName: newListName,
-      tasks: [],
+      // id: Math.floor(Math.random() * 101),
+      name: newListName,
     };
     console.log('New list: ', newListItem);
-    setLists((prevLists) => [...prevLists, newListItem]);
+    makeRequest({ method: 'post', url: `${BACKEND_URL}${LIST_ROUTE}` }, { data: newListItem }).then((newList) => console.log(newList));
+    // setLists((prevLists) => [...prevLists, newListItem]);
   };
 
   const createTask = (taskTitle, listId) => {
@@ -107,6 +118,7 @@ function App() {
       onEdit={editTask}
     />
   );
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -116,7 +128,7 @@ function App() {
           <Route path={`${LIST_ROUTE}/add`} element={addListPage} />
           <Route path={`${LIST_ROUTE}/:listId${TASK_ROUTE}/add`} element={addTaskPage} />
           <Route path={`${LIST_ROUTE}/:listId${TASK_ROUTE}/:taskId/edit`} element={editTaskPage} />
-          <Route path="*" element={<p>404 not found!</p>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </div>

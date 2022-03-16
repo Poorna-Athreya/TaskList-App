@@ -9,7 +9,7 @@ function List({ lists, onClickList }) {
     <ListItem
       id={eachList.id}
       key={eachList.id}
-      listName={eachList.listName}
+      listName={eachList.name}
       onClickList={onClickList}
     />
   ));
