@@ -15,7 +15,7 @@ function List({ lists, onClickList }) {
   ));
   return (
     <div className="lists-container">
-      <h1> Available Lists:</h1>
+      <h1> AVAILABLE LISTS</h1>
       <div className="listItems-container">
         {listDisplay}
       </div>

@@ -12,10 +12,19 @@ function Tasks({ getListById, onClickEdit }) {
   const listItem = getListById(paramsListId);
   if (listItem.tasks.length === 0) {
     return (
-      <div className="no-tasks-container">
-        <h2>No tasks found!</h2>
-        <button type="button" className="back-button" onClick={() => navigate(-1)}>Back</button>
-      </div>
+      <>
+        <div className="no-tasks-container">
+          <h2>
+            No tasks found for
+            {' '}
+            {listItem.listName}
+            {' '}
+            !
+          </h2>
+        </div>
+        <button type="button" className="back-button" onClick={() => navigate(-1)}>Back to Lists</button>
+
+      </>
     );
   }
 
@@ -37,7 +46,7 @@ function Tasks({ getListById, onClickEdit }) {
           {tasks}
         </div>
       </div>
-      <button type="button" className="back-button" onClick={() => navigate(`${LIST_ROUTE}`)}>Back</button>
+      <button type="button" className="back-button" onClick={() => navigate(`${LIST_ROUTE}`)}>Back to Lists</button>
     </>
   );
 }

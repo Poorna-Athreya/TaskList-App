@@ -1,5 +1,7 @@
 .list-items{
     cursor: pointer;
+    margin-right:1%;
+    margin-top:1%;
     background-color: white;
     height:200px;
     width:300px;

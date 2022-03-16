@@ -6,7 +6,7 @@ import Button from '../Button/Button';
 import { LIST_ROUTE } from '../../constants/routes';
 
 function AddOrEditItemDialog({
-  item, itemValue, onCreate, onEdit, getTaskById,
+  item, itemEditOrAdd, onCreate, onEdit, getTaskById,
 }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -18,7 +18,8 @@ function AddOrEditItemDialog({
     const { listId, taskId } = params;
     if (item === 'List') {
       onCreate(newItem);
-    } else if (itemValue === '') {
+      navigate(`${LIST_ROUTE}`);
+    } else if (itemEditOrAdd === 'Add') {
       onCreate(newItem, parseInt(listId, 10));
       navigate(`${LIST_ROUTE}/${listId}`);
     } else {
@@ -40,13 +41,7 @@ function AddOrEditItemDialog({
   return (
     <div className="add-item-dialog-container">
       <form className="add-item-form" onSubmit={onSubmitForm} onCancel={() => navigate(-1)}>
-        <label htmlFor="new-item">
-          {' '}
-          Add
-          {' '}
-          {item}
-          {' '}
-        </label>
+        <label htmlFor="new-item">{`${itemEditOrAdd} ${item}`}</label>
         <input id="new-item" type="text" value={newItem} onChange={onChangeItem} />
         <div className="add-form-buttons">
           <Button type="submit" content="Submit" className="submit-button" />
@@ -58,7 +53,7 @@ function AddOrEditItemDialog({
 }
 AddOrEditItemDialog.propTypes = {
   item: PropTypes.string,
-  itemValue: PropTypes.string,
+  itemEditOrAdd: PropTypes.string,
   onCreate: PropTypes.func,
   onEdit: PropTypes.func,
   getTaskById: PropTypes.func,
@@ -66,7 +61,7 @@ AddOrEditItemDialog.propTypes = {
 
 AddOrEditItemDialog.defaultProps = {
   item: '',
-  itemValue: '',
+  itemEditOrAdd: 'Add',
   onCreate: () => {},
   onEdit: () => {},
   getTaskById: () => {},

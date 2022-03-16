@@ -16,14 +16,14 @@ function AddItem({ item }) {
   };
   const onClickAddItem = () => {
     if (item === 'List') onClickAddList();
-    onClickAddTask();
+    else onClickAddTask();
   };
   return (
     <div className="add-new-item">
       <button type="button" className="add-item-button" onClick={onClickAddItem}> +</button>
       <h3>
-        Create
-        {item}
+        CREATE
+        {` ${item.toUpperCase()}`}
       </h3>
     </div>
   );
