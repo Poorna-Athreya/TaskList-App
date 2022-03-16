@@ -22,6 +22,7 @@ function App() {
       listName: newListName,
       tasks: [],
     };
+    console.log('New list: ', newListItem);
     setLists((prevLists) => [...prevLists, newListItem]);
   };
 
@@ -74,7 +75,7 @@ function App() {
 
   const listsPage = (
     <div className="lists-page">
-      <AddItem item="List" />
+      <AddItem item="List" itemEditOrAdd="Add" />
       <List lists={lists} />
     </div>
   );
@@ -93,13 +94,14 @@ function App() {
   const addTaskPage = (
     <AddOrEditItemDialog
       item="Task"
+      itemEditOrAdd="Add"
       onCreate={createTask}
     />
   );
   const editTaskPage = (
     <AddOrEditItemDialog
       item="Task"
-      itemValue="edit"
+      itemEditOrAdd="Edit"
       setListData={setLists}
       getTaskById={getTaskById}
       onEdit={editTask}
