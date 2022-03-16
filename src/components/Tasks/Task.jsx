@@ -1,13 +1,25 @@
-/* eslint-disable react/forbid-prop-types */
 import './Task.css';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import TaskItem from '../TaskItems/TaskItem';
+import { LIST_ROUTE } from '../../constants/routes';
 
-function Tasks({ list, onClickEdit }) {
-  if (list.tasks.length === 0) return (<h2>No tasks found!</h2>);
+function Tasks({ getListById, onClickEdit }) {
+  const navigate = useNavigate();
+  const params = useParams();
+  const paramsListId = parseInt(params.listId, 10);
+  const listItem = getListById(paramsListId);
+  if (listItem.tasks.length === 0) {
+    return (
+      <div className="no-tasks-container">
+        <h2>No tasks found!</h2>
+        <button type="button" className="back-button" onClick={() => navigate(-1)}>Back</button>
+      </div>
+    );
+  }
 
-  const tasks = list.tasks.map((eachTask) => (
+  const tasks = listItem.tasks.map((eachTask) => (
     <TaskItem
       key={eachTask.id}
       id={eachTask.id}
@@ -16,22 +28,25 @@ function Tasks({ list, onClickEdit }) {
     />
   ));
   return (
-    <div className="tasks-container">
-      <div className="tasks-header">
-        <h2>{list.listName}</h2>
+    <>
+      <div className="tasks-container">
+        <div className="tasks-header">
+          <h2>{listItem.listName}</h2>
+        </div>
+        <div className="tasks-content">
+          {tasks}
+        </div>
       </div>
-      <div className="tasks-content">
-        {tasks}
-      </div>
-    </div>
+      <button type="button" className="back-button" onClick={() => navigate(`${LIST_ROUTE}`)}>Back</button>
+    </>
   );
 }
 Tasks.propTypes = {
-  list: PropTypes.object,
+  getListById: PropTypes.func,
   onClickEdit: PropTypes.func,
 };
 Tasks.defaultProps = {
-  list: { tasks: [] },
+  getListById: () => {},
   onClickEdit: () => {},
 };
 export default Tasks;

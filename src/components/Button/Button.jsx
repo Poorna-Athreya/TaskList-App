@@ -1,7 +1,19 @@
 import './Button.css';
+import PropTypes from 'prop-types';
+import React from 'react';
 
-const Button = (props) => {
-    if(props.type === 'submit') return (<button className ='submit-button' type='submit'>{props.content}</button>);
-    else return(<button onClick ={props.onClick} className='cancel-button'>{props.content}</button>)
+function Button({ type, onClick, content }) {
+  if (type === 'submit') return (<button className="submit-button" type="submit">{content}</button>);
+  return (<button type="button" onClick={onClick} className="cancel-button">{content}</button>);
+}
+Button.propTypes = {
+  type: PropTypes.string,
+  onClick: PropTypes.func,
+  content: PropTypes.string,
+};
+Button.defaultProps = {
+  type: 'submit',
+  onClick: () => {},
+  content: 'Submit',
 };
 export default Button;

@@ -1,7 +1,8 @@
 .add-item-dialog-container{
-    width:60%;
+    width:45%;
     background-color: white;
     margin-top:15%;
+    padding:10px;
     margin-left:20%;
 }
 .add-form-buttons{
