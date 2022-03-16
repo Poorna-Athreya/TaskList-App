@@ -1,15 +1,33 @@
 import './List.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-// import { Link } from 'react-router-dom';
 import ListItem from '../ListItems/ListItem';
+import makeRequest from '../../utils/makeRequest/makeRequest';
+import { getMatchEndpoint, agentsEndpoint } from '../../constants/apiEndpoints';
 
 function List({ lists, onClickList }) {
+  const [responseData, setResponseData] = useState(null);
+  const [isInitialised, setIsInitialised] = useState(false);
+  useEffect(() => {
+    if (!isInitialised) {
+      setIsInitialised(true);
+      makeRequest(agentsEndpoint).then((response) => {
+        console.log(response);
+        setResponseData(response);
+      });
+      makeRequest(getMatchEndpoint('12c3se4')).then((response) => console.log(response));
+    }
+  });
+
+  useEffect(() => {
+    console.log('RESPONSE DATA: ', responseData);
+  }, [responseData]);
+
   const listDisplay = lists.map((eachList) => (
     <ListItem
       id={eachList.id}
       key={eachList.id}
-      listName={eachList.listName}
+      listName={responseData.agents[0].name}
       onClickList={onClickList}
     />
   ));
