@@ -5,6 +5,10 @@
   height: 40vmin;
   pointer-events: none;
 }
+body{
+  height:400%;
+  background-color: #59b6a6;
+}
 button{
   cursor: pointer;
 }

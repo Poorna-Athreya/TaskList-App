@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../Button/Button';
 import { LIST_ROUTE } from '../../constants/routes';
+import makeRequest from '../../utils/makeRequest';
 
 function AddOrEditItemDialog({
-  item, itemEditOrAdd, onCreate, onEdit, getTaskById,
+  item, itemEditOrAdd, onCreate, getTaskById, setTasks, tasks,
 }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -20,10 +21,28 @@ function AddOrEditItemDialog({
       onCreate(newItem);
       navigate(`${LIST_ROUTE}`);
     } else if (itemEditOrAdd === 'Add') {
-      onCreate(newItem, parseInt(listId, 10));
+      const newTaskItem = {
+        title: newItem,
+        listId: parseInt(listId, 10),
+      };
+      makeRequest({ method: 'post', url: `${LIST_ROUTE}/task` }, { data: newTaskItem }).then((newTaskResponse) => {
+        console.log(newTaskResponse);
+        setTasks(() => [...tasks, newTaskResponse]);
+      });
       navigate(`${LIST_ROUTE}/${listId}`);
     } else {
-      onEdit(newItem, parseInt(listId, 10), parseInt(taskId, 10));
+      const modifiedTaskDetails = {
+        title: newItem,
+        listId: parseInt(listId, 10),
+        id: parseInt(taskId, 10),
+      };
+      makeRequest({ method: 'put', url: `${LIST_ROUTE}/task` }, { data: modifiedTaskDetails }).then((modifiedTask) => {
+        const modifiedTasks = tasks.map((eachTask) => {
+          if (eachTask.id === modifiedTask[0].id) return modifiedTask[0];
+          return eachTask;
+        });
+        setTasks(modifiedTasks);
+      });
       navigate(`${LIST_ROUTE}/${listId}`);
     }
     setNewItem('');
@@ -33,9 +52,9 @@ function AddOrEditItemDialog({
     setNewItem(event.target.value);
   };
   if (params.taskId && !newItem && !isTaskTitleLoaded) {
+    setIsTaskTitleLoaded(true);
     const taskBeingEdited = getTaskById(parseInt(params.listId, 10), parseInt(params.taskId, 10));
     if (taskBeingEdited) setNewItem(taskBeingEdited.title);
-    setIsTaskTitleLoaded(true);
   }
 
   return (
@@ -53,17 +72,23 @@ function AddOrEditItemDialog({
 }
 AddOrEditItemDialog.propTypes = {
   item: PropTypes.string,
+  tasks: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    listId: PropTypes.number,
+    title: PropTypes.string,
+  })),
   itemEditOrAdd: PropTypes.string,
   onCreate: PropTypes.func,
-  onEdit: PropTypes.func,
   getTaskById: PropTypes.func,
+  setTasks: PropTypes.func,
 };
 
 AddOrEditItemDialog.defaultProps = {
   item: '',
+  tasks: [],
   itemEditOrAdd: 'Add',
   onCreate: () => {},
-  onEdit: () => {},
   getTaskById: () => {},
+  setTasks: () => {},
 };
 export default AddOrEditItemDialog;

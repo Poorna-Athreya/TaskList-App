@@ -7,10 +7,10 @@ import {
 import TaskItem from '../TaskItems/TaskItem';
 import { LIST_ROUTE } from '../../constants/routes';
 import makeRequest from '../../utils/makeRequest';
-import { BACKEND_URL } from '../../constants/apiEndpoints';
 
-function Tasks({ getListById, onClickEdit }) {
-  const [tasks, setTasks] = useState([]);
+function Tasks({
+  getListById, onClickEdit, tasks, setTasks,
+}) {
   const [isTasksLoaded, setIsTasksLoaded] = useState(false);
 
   const navigate = useNavigate();
@@ -19,14 +19,10 @@ function Tasks({ getListById, onClickEdit }) {
   const paramsListId = parseInt(params.listId, 10);
   const listItem = getListById(paramsListId);
 
-  // console.log('List id: ', paramsListId, ' ', listItem);
-  const listName = listItem.name;
-  console.log('ListName: ', listName);
-
   useEffect(() => {
     if (!isTasksLoaded) {
       setIsTasksLoaded(true);
-      makeRequest({ method: 'get', url: `${BACKEND_URL}${LIST_ROUTE}/${paramsListId}` }).then((taskData) => {
+      makeRequest({ method: 'get', url: `${LIST_ROUTE}/${paramsListId}` }).then((taskData) => {
         console.log('Tasks: ', taskData);
         setTasks(taskData);
       });
@@ -39,12 +35,22 @@ function Tasks({ getListById, onClickEdit }) {
           <h2>
             No tasks found for
             {' '}
-            {listName}
+            {listItem.name}
             {' '}
             !
           </h2>
         </div>
-        <button type="button" className="back-button" onClick={() => navigate(-1)}>Back to Lists</button>
+        <button
+          type="button"
+          className="back-button"
+          onClick={() => {
+            navigate(`${LIST_ROUTE}`);
+            setTasks(() => []);
+          }}
+        >
+          Back to Lists
+
+        </button>
 
       </>
     );
@@ -62,19 +68,35 @@ function Tasks({ getListById, onClickEdit }) {
     <>
       <div className="tasks-container">
         <div className="tasks-header">
-          <h2>{listName}</h2>
+          <h2>{listItem.name}</h2>
         </div>
         <div className="tasks-content">
           {tasksDisplay}
         </div>
       </div>
-      <button type="button" className="back-button" onClick={() => navigate(`${LIST_ROUTE}`)}>Back to Lists</button>
+      <button
+        type="button"
+        className="back-button"
+        onClick={() => {
+          navigate(`${LIST_ROUTE}`);
+          setTasks(() => []);
+        }}
+      >
+        Back to Lists
+
+      </button>
     </>
   );
 }
 Tasks.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    listId: PropTypes.number,
+    title: PropTypes.string,
+  })).isRequired,
   getListById: PropTypes.func,
   onClickEdit: PropTypes.func,
+  setTasks: PropTypes.func.isRequired,
 };
 Tasks.defaultProps = {
   getListById: () => {},

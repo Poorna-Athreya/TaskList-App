@@ -9,10 +9,12 @@ import { LIST_ROUTE, TASK_ROUTE } from '../../constants/routes';
 function TaskItem({ taskTitle, id }) {
   const params = useParams();
   const navigate = useNavigate();
+
   const onClickEdit = () => {
     const { listId } = params;
     navigate(`${LIST_ROUTE}/${listId}${TASK_ROUTE}/${id}/edit`);
   };
+
   return (
     <div className="task-item">
       <p>{taskTitle}</p>

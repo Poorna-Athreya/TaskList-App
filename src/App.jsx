@@ -10,16 +10,18 @@ import AddOrEditItemDialog from './components/AddOrEditItemDialog/AddOrEditItemD
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import { LIST_ROUTE, TASK_ROUTE } from './constants/routes';
 import makeRequest from './utils/makeRequest';
-import { BACKEND_URL } from './constants/apiEndpoints';
 import { INITIAL_LISTS } from './constants/values';
 
 function App() {
   const [lists, setLists] = useState(INITIAL_LISTS);
+  const [currentListTasks, setCurrentListTasks] = useState([]);
+
   const [isListsInitialised, setIsListsInitialised] = useState(false);
+
   useEffect(() => {
     if (!isListsInitialised) {
       setIsListsInitialised(true);
-      makeRequest({ method: 'get', url: `${BACKEND_URL}${LIST_ROUTE}` }).then((listsData) => {
+      makeRequest({ method: 'get', url: `${LIST_ROUTE}` }).then((listsData) => {
         setLists(listsData);
       });
     }
@@ -29,60 +31,40 @@ function App() {
 
   const createList = (newListName) => {
     const newListItem = {
-      // id: Math.floor(Math.random() * 101),
       name: newListName,
     };
-    console.log('New list: ', newListItem);
-    makeRequest({ method: 'post', url: `${BACKEND_URL}${LIST_ROUTE}` }, { data: newListItem }).then((newList) => console.log(newList));
-    // setLists((prevLists) => [...prevLists, newListItem]);
-  };
-
-  const createTask = (taskTitle, listId) => {
-    const modifiedList = lists.map((eachList) => {
-      if (eachList.id !== listId) {
-        return eachList;
-      }
-      const modifiedListItem = { ...eachList };
-      const modifiedTasks = [...eachList.tasks,
-        { id: Math.floor(Math.random() * 101), title: taskTitle }];
-      modifiedListItem.tasks = modifiedTasks;
-      return modifiedListItem;
+    makeRequest({ method: 'post', url: `${LIST_ROUTE}` }, { data: newListItem }).then((newListData) => {
+      setLists((prevLists) => [...prevLists, { id: newListData.newListId, name: newListName }]);
     });
-    setLists(() => modifiedList);
   };
 
   const getTaskById = (listId, taskId) => {
-    let oldTask;
-    lists.forEach((listItem) => {
-      if (listItem.id === listId) {
-        oldTask = listItem.tasks.find((task) => {
-          if (task.id === taskId) {
-            return task;
-          }
-          return null;
-        });
+    const oldTask = currentListTasks.find((taskItem) => {
+      if (taskItem.id === taskId && taskItem.listId === listId) {
+        return taskItem;
       }
+      return null;
     });
     return oldTask;
   };
 
-  const editTask = (newTaskTitle, listId, taskId) => {
-    const modifiedList = lists.map((eachList) => {
-      if (eachList.id !== listId) {
-        return eachList;
-      }
-      const modifiedListItem = { ...eachList };
-      const modifiedTasks = eachList.tasks.map((eachTask) => {
-        if (eachTask.id === taskId) {
-          return { id: taskId, title: newTaskTitle };
-        }
-        return eachTask;
-      });
-      modifiedListItem.tasks = modifiedTasks;
-      return modifiedListItem;
-    });
-    setLists(() => modifiedList);
-  };
+  // const editTask = (newTaskTitle, listId, taskId) => {
+  //   const modifiedList = lists.map((eachList) => {
+  //     if (eachList.id !== listId) {
+  //       return eachList;
+  //     }
+  //     const modifiedListItem = { ...eachList };
+  //     const modifiedTasks = eachList.tasks.map((eachTask) => {
+  //       if (eachTask.id === taskId) {
+  //         return { id: taskId, title: newTaskTitle };
+  //       }
+  //       return eachTask;
+  //     });
+  //     modifiedListItem.tasks = modifiedTasks;
+  //     return modifiedListItem;
+  //   });
+  //   setLists(() => modifiedList);
+  // };
 
   const listsPage = (
     <div className="lists-page">
@@ -93,7 +75,7 @@ function App() {
   const tasksPage = (
     <div className="tasks-page">
       <AddItem item="Task" />
-      <Tasks getListById={getListById} />
+      <Tasks getListById={getListById} tasks={currentListTasks} setTasks={setCurrentListTasks} />
     </div>
   );
   const addListPage = (
@@ -106,16 +88,17 @@ function App() {
     <AddOrEditItemDialog
       item="Task"
       itemEditOrAdd="Add"
-      onCreate={createTask}
+      setTasks={setCurrentListTasks}
+      tasks={currentListTasks}
     />
   );
   const editTaskPage = (
     <AddOrEditItemDialog
       item="Task"
       itemEditOrAdd="Edit"
-      setListData={setLists}
+      tasks={currentListTasks}
+      setTasks={setCurrentListTasks}
       getTaskById={getTaskById}
-      onEdit={editTask}
     />
   );
 
