@@ -11,6 +11,7 @@ import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import { LIST_ROUTE, TASK_ROUTE } from './constants/routes';
 import makeRequest from './utils/makeRequest';
 import { INITIAL_LISTS } from './constants/values';
+import utils from './utils/common';
 
 function App() {
   const [lists, setLists] = useState(INITIAL_LISTS);
@@ -27,7 +28,7 @@ function App() {
     }
   }, [lists]);
 
-  const getListById = (listId) => lists.find((listItem) => listItem.id === listId);
+  const getListById = (listId) => utils.getItemById(lists, listId);
 
   const createList = (newListName) => {
     const newListItem = {
@@ -38,33 +39,7 @@ function App() {
     });
   };
 
-  const getTaskById = (listId, taskId) => {
-    const oldTask = currentListTasks.find((taskItem) => {
-      if (taskItem.id === taskId && taskItem.listId === listId) {
-        return taskItem;
-      }
-      return null;
-    });
-    return oldTask;
-  };
-
-  // const editTask = (newTaskTitle, listId, taskId) => {
-  //   const modifiedList = lists.map((eachList) => {
-  //     if (eachList.id !== listId) {
-  //       return eachList;
-  //     }
-  //     const modifiedListItem = { ...eachList };
-  //     const modifiedTasks = eachList.tasks.map((eachTask) => {
-  //       if (eachTask.id === taskId) {
-  //         return { id: taskId, title: newTaskTitle };
-  //       }
-  //       return eachTask;
-  //     });
-  //     modifiedListItem.tasks = modifiedTasks;
-  //     return modifiedListItem;
-  //   });
-  //   setLists(() => modifiedList);
-  // };
+  const getTaskById = (listId, taskId) => utils.getItemById(currentListTasks, listId, taskId);
 
   const listsPage = (
     <div className="lists-page">
@@ -75,7 +50,11 @@ function App() {
   const tasksPage = (
     <div className="tasks-page">
       <AddItem item="Task" />
-      <Tasks getListById={getListById} tasks={currentListTasks} setTasks={setCurrentListTasks} />
+      <Tasks
+        getListById={getListById}
+        tasks={currentListTasks}
+        setTasks={setCurrentListTasks}
+      />
     </div>
   );
   const addListPage = (
