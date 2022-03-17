@@ -1,5 +1,15 @@
 .not-found-container{
+    margin:10%;
     display:flex;
+    flex-direction: column;
     justify-content: center;
     align-content: center;
+}
+.not-found-message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+body{
+    background-color: var(--bg-color);
 }

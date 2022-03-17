@@ -1,7 +1,6 @@
 import './List.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { Link } from 'react-router-dom';
 import ListItem from '../ListItems/ListItem';
 
 function List({ lists, onClickList }) {

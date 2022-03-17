@@ -7,6 +7,7 @@ import {
 import TaskItem from '../TaskItems/TaskItem';
 import { LIST_ROUTE } from '../../constants/routes';
 import makeRequest from '../../utils/makeRequest';
+import BackToListsButton from '../BackToListsButton/BackToListsButton';
 
 function Tasks({
   getListById, onClickEdit, tasks, setTasks,
@@ -22,7 +23,7 @@ function Tasks({
   useEffect(() => {
     if (!isTasksLoaded) {
       setIsTasksLoaded(true);
-      makeRequest({ method: 'get', url: `${LIST_ROUTE}/${paramsListId}` }).then((taskData) => {
+      makeRequest({ method: 'get', url: `${LIST_ROUTE}/${paramsListId}` }, {}, navigate).then((taskData) => {
         console.log('Tasks: ', taskData);
         setTasks(taskData);
       });
@@ -40,17 +41,7 @@ function Tasks({
             !
           </h2>
         </div>
-        <button
-          type="button"
-          className="back-button"
-          onClick={() => {
-            navigate(`${LIST_ROUTE}`);
-            setTasks(() => []);
-          }}
-        >
-          Back to Lists
-
-        </button>
+        <BackToListsButton onClickAddition={setTasks} />
 
       </>
     );
@@ -74,17 +65,7 @@ function Tasks({
           {tasksDisplay}
         </div>
       </div>
-      <button
-        type="button"
-        className="back-button"
-        onClick={() => {
-          navigate(`${LIST_ROUTE}`);
-          setTasks(() => []);
-        }}
-      >
-        Back to Lists
-
-      </button>
+      <BackToListsButton onClickAddition={setTasks} />
     </>
   );
 }

@@ -1,15 +1,16 @@
+/* body{
+    background: linear-gradient(0deg, var(--bg-color) 50%, var(--header-color) 50%);
+    background-repeat: no-repeat;
+} */
 .tasks-container{
     background-color: white;
     width:80%;
     height:100%;
     align-self: center;
-    margin-left:10%;
+    margin:10%;
+    margin-bottom:0%;
     padding:1%;
     padding-bottom:3%;
-}
-.back-button {
-    color: black;
-    font-weight: bold;
 }
 .no-tasks-container {
     background-color: white;

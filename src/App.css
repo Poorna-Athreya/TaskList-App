@@ -1,26 +1,22 @@
+* {
+  --accent-color: rgb(98, 162, 223);
+  --bg-color: #92a4ac;
+  --header-color: #2b5080;
+}
 .App {
   text-align: center;
 }
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 body{
   height:400%;
-  background-color: #59b6a6;
+  background-color: var(--bg-color);
 }
 button{
   cursor: pointer;
 }
 .back-button{
   padding: 10px;
-  color:rgb(98, 162, 223);
+  color: var(--accent-color);
   background-color: white;
   margin:2%;
   border:none;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
