@@ -4,6 +4,7 @@
     margin-top:15%;
     padding:10px;
     margin-left:20%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;;
 }
 .add-form-buttons{
     margin-top:20px;
@@ -19,15 +20,20 @@
 .add-item-form label {
     font-weight: bold;
     margin-bottom:3%;
+    color: var(--header-color);
 }
 .add-item-form input{
-    width:50%;
+    margin-top:3%;
+    height:30px;
+    width:80%;
     border: none;
     border-bottom: 2px solid blue;
 }
 .add-form-buttons > button{
+    padding: 0px;
     font-weight: bold;
-    margin-right:20px;
+    margin-top: 20%;
+    margin-right:50%;
     background: transparent;
     border: transparent;
 }
@@ -35,5 +41,18 @@
     color: grey;
 }
 .submit-button{
-    color:blue;
+    color:var(--accent-color);
+}
+
+@media screen and (max-width:1200px) {
+    .add-item-dialog-container{
+        margin-top:20%;
+        padding:20px;
+    }
+}
+
+@media screen and (max-width: 800px){
+    .add-item-dialog-container{
+        margin-top: 30%;
+    }
 }

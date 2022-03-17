@@ -22,3 +22,11 @@
 .edit-button:hover{
     color: black;
 }
+
+@media screen and (max-width: 700px) {
+    .task-item{
+        margin-left:3%;
+        margin-right:5%;
+        margin-top:1%;
+    }
+}
