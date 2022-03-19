@@ -14,6 +14,16 @@ function AddOrEditItemDialog({
   const [newItem, setNewItem] = useState('');
   const [isTaskTitleLoaded, setIsTaskTitleLoaded] = useState(false);
 
+  // const validateInput = (event) => {
+  //   event.preventDefault();
+  //   const errors = [];
+  //   if (newItem.trim().length === 0) errors.push('Input must contain at least 1 character!');
+  //   if (errors.length > 0) {
+  //     const errorMessage = document.getElementsByClassName('input-errors');
+  //     errorMessage.style.display = 'block';
+  //   }
+  // };
+
   const onSubmitForm = (event) => {
     event.preventDefault();
     const { listId, taskId } = params;
@@ -59,11 +69,14 @@ function AddOrEditItemDialog({
 
   return (
     <div className="add-item-dialog-container">
-      <form className="add-item-form" onSubmit={onSubmitForm} onCancel={() => navigate(-1)}>
+      <form data-testid="AddOrEditItemForm" className="add-item-form" onSubmit={onSubmitForm} onCancel={() => navigate(-1)}>
         <label htmlFor="new-item">{`${itemEditOrAdd} ${item}`}</label>
-        <input id="new-item" type="text" value={newItem} onChange={onChangeItem} />
+        <p className="input-error" value="" />
+        <input id="new-item" type="text" value={newItem} onChange={onChangeItem} data-testid="testId-inputText" />
         <div className="add-form-buttons">
           <Button type="submit" content="Submit" className="submit-button" />
+          {' '}
+          {/* onClick={validateInput} */}
           <Button type="cancel" content="Cancel" onClick={() => navigate(-1)} className="cancel-button" />
         </div>
       </form>

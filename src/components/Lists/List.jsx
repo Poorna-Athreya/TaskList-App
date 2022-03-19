@@ -25,15 +25,11 @@ List.propTypes = {
   lists: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     listName: PropTypes.string,
-    tasks: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      title: PropTypes.string,
-    })),
   })),
   onClickList: PropTypes.func,
 };
 List.defaultProps = {
-  lists: [{ id: 1, listName: 'listname', tasks: [{ id: 1, title: '' }] }],
+  lists: [{ id: 1, listName: 'listname' }],
   onClickList: () => {},
 };
 export default List;
